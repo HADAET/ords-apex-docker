@@ -1,0 +1,30 @@
+services:
+  ords:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: ords_apex
+
+    ports:
+      - "8085:8085"
+
+    volumes:
+      - ./ORDS/config:/opt/ords-config
+      - ./apex:/opt/oracle/apex:ro
+
+    environment:
+      DB_HOSTNAME: host.docker.internal
+      DB_PORT: "1521"
+      DB_SERVICENAME: xepdb1
+
+      # SYS password is ONLY used during first-time installation.
+      SYS_PASS: abed
+
+      # Optional. If omitted, ORDS generates the runtime password.
+      ORDS_PASS: abed
+
+      ORDS_CONFIG_DIR: /opt/ords-config
+      ORDS_PORT: "8085"
+
+    restart: unless-stopped
